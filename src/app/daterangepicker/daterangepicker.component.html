@@ -1,0 +1,22 @@
+<div class="rl-drpicker">
+  <div id="range-container" class="column">
+    <div *ngFor="let range of ranges" class="range">{{range}}</div>
+    <div class="buttons">
+      <button>Apply</button>
+      <button>Cancel</button>
+    </div>
+  </div>
+  <div id="calendar-container" class="column left">
+    <div class="calendar-input">
+      <input type="text" placeholder="Start Date" />
+    </div>
+    <div class="calendar-table">
+      <div class="days-header">
+        <div class="day" *ngFor="let day of days">{{day}}</div>
+      </div>
+      <div class="calendar-row" *ngFor="let row of leftCalendar">
+        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')">{{col.date()}}</div>
+      </div>
+    </div>
+  </div>
+</div>

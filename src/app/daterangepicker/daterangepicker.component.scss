@@ -1,0 +1,81 @@
+.rl-drpicker{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    display: inline-block;
+    border:2px solid #ccc;
+    background-color: #fff;
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    width:auto;
+    padding:10px;
+    >.column{
+        display: inline-block;
+        vertical-align: top;
+    }
+    >#range-container {
+        width:140px;
+        >.range{
+            font-size: 11pt;
+            background-color: #f5f5f5;
+            border: 1px solid #f5f5f5;
+            color: #08c;
+            padding: 5px 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        >.range:hover{
+            background-color: #08c;
+    border: 1px solid #08c;
+    color: #fff;
+        }
+    }
+    >#calendar-container{
+        margin-left:10px;
+        .days-header{
+            >div{
+                display:inline-block;
+                padding:7px 3px;
+                font-weight: 800;
+                font-size: 10pt;
+                white-space: nowrap;
+    text-align: center;
+    min-width: 32px;
+            }
+        }
+        .calendar-row{
+            >div{
+                display:inline-block;
+                padding:7px 3px;
+                font-weight: 500;
+                font-size: 10pt;
+                white-space: nowrap;
+    text-align: center;
+    min-width: 32px;
+            }
+            .today{
+                background:#b71c1c;
+                color:white;
+            }
+            .off{
+                color: #999;
+            }
+        }
+    }
+}
+.rl-drpicker:before{
+    position: absolute;
+    display: inline-block;
+    top: -7px;
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    border-bottom: 7px solid #ccc;
+    content: '';
+}
+.rl-drpicker:after{
+    position: absolute;
+    display: inline-block;
+    top: -7px;
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    border-bottom: 7px solid #ccc;
+    content: '';
+}
