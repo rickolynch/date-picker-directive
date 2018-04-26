@@ -2,8 +2,8 @@
   <div id="range-container" class="column">
     <div *ngFor="let range of ranges" class="range">{{range}}</div>
     <div class="buttons">
-      <button>Apply</button>
-      <button>Cancel</button>
+      <button class="apply">Apply</button>
+      <button class="cancel">Cancel</button>
     </div>
   </div>
   <div id="calendar-container" class="column left">
@@ -11,11 +11,31 @@
       <input type="text" placeholder="Start Date" />
     </div>
     <div class="calendar-table">
+      <div class="calendar-period">
+        <i class="calendar-nav prev" (click)="clickPrev()"></i>
+        {{getMonth('left')}}</div>
       <div class="days-header">
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
-      <div class="calendar-row" *ngFor="let row of leftCalendar">
-        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')">{{col.date()}}</div>
+      <div class="calendar-row" *ngFor="let row of leftCalendar.calendar">
+        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')" [ngClass]="{'active start-date':isStartDate(col)}"
+          [ngClass]="{'active end-date':isEndDate(col)}" (click)="clickdate(col, 'left')">{{col.date()}}</div>
+      </div>
+    </div>
+  </div>
+  <div id="calendar-container" class="column right">
+    <div class="calendar-input">
+      <input type="text" placeholder="Start Date" />
+    </div>
+    <div class="calendar-table">
+      <div class="calendar-period">
+        <i class="calendar-nav next" (click)="clickNext()"></i>
+        {{getMonth('right')}}</div>
+      <div class="days-header">
+        <div class="day" *ngFor="let day of days">{{day}}</div>
+      </div>
+      <div class="calendar-row" *ngFor="let row of rightCalendar.calendar">
+        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'right')" (click)="clickdate(col, 'right')">{{col.date()}}</div>
       </div>
     </div>
   </div>
