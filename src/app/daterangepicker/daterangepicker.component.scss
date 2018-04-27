@@ -94,9 +94,23 @@
         background-color: #eee;
         color: #333;
       }
-      >div.active {
+      >div.active:not(.off) {
         background-color: #08c;
         color: #fff;
+      }
+      >div.start-date:not(.off) {
+        border-radius: 5px 0 0 5px;
+      }
+      >div.end-date:not(.off) {
+        border-radius: 0 5px 5px 0;
+      }
+      >div.start-date.end-date {
+        border-radius: 5px;
+      }
+      >div.in-range:not(.off) {
+        background-color: #ebf4f8;
+        color: #333;
+        ;
       }
       .today {
         background: #b71c1c;
@@ -123,6 +137,7 @@
     }
     button.cancel {
       background: #eee;
+      border: 1px solid #ddd;
     }
     button.cancel:hover {
       background: #ccc;

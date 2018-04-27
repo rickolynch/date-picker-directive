@@ -18,8 +18,9 @@
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
       <div class="calendar-row" *ngFor="let row of leftCalendar.calendar">
-        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')" [ngClass]="{'active start-date':isStartDate(col)}"
-          [ngClass]="{'active end-date':isEndDate(col)}" (click)="clickdate(col, 'left')">{{col.date()}}</div>
+        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')" [class.active]="isActiveDate(col)"
+          [class.in-range]="isInRange(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}" (mouseenter)="hoverdate(col)"
+          (click)="clickdate(col, 'left')">{{col.date()}}</div>
       </div>
     </div>
   </div>
@@ -35,7 +36,9 @@
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
       <div class="calendar-row" *ngFor="let row of rightCalendar.calendar">
-        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'right')" (click)="clickdate(col, 'right')">{{col.date()}}</div>
+        <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'right')" [class.active]="isActiveDate(col)"
+          [class.in-range]="isInRange(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}" (mouseenter)="hoverdate(col)"
+          (click)="clickdate(col, 'right')">{{col.date()}}</div>
       </div>
     </div>
   </div>
