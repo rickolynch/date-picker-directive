@@ -19,20 +19,46 @@ export class DaterangepickerComponent implements OnInit {
     monthNames: moment.monthsShort(),
     firstDay: moment.localeData().firstDayOfWeek()
   };
-  minDate: any = false;
-  maxDate: any = false;
-  singleDatePicker: false;
+  minDate: any = moment('01/29/2018', this.locale.format);
+  maxDate: any = moment('05/29/2018', this.locale.format);
+  singleDatePicker = false;
   linkedCalendars = true;
   startDate = moment().startOf('day');
   endDate = moment().endOf('day');
   tmpDate: any = null;
+  tmpEndDate: any = null;
   leftCalendar = { month: this.startDate.clone().date(2), calendar: null };
   rightCalendar = { month: this.endDate.clone().date(2).add(1, 'month'), calendar: null };
-  ranges: any = ['Today', 'Yesterday', 'Last 7 days', 'Last 30 days', 'This Month', 'Last Month'];
+  ranges: any;// = ['Today', 'Yesterday', 'Last 7 days', 'Last 30 days', 'This Month', 'Last Month'];
   days: any = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  displayStartDate: string;
+  displayEndDate: string;
+  focusedInput: string = 'start';
   constructor() { }
 
   ngOnInit() {
+    this.ranges = [{
+      title: 'Today',
+      period: [moment(), moment()]
+    }, {
+      title: 'Yesterday',
+      period: [moment().subtract(1, 'day'), moment().subtract(1, 'day')]
+    }, {
+      title: 'Last 7 Days',
+      period: [moment().subtract(6, 'day'), moment()]
+    }, {
+      title: 'Last 30 Days',
+      period: [moment().subtract(29, 'day'), moment()]
+    }, {
+      title: 'This Month',
+      period: [moment().startOf('month'), moment()]
+    }, {
+      title: 'Last Month',
+      period: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }];
+
+    this.displayStartDate = this.startDate.format(this.locale.format);
+    this.displayEndDate = this.endDate.format(this.locale.format);
     this.renderCalendar('left');
     this.renderCalendar('right');
   }
@@ -118,6 +144,14 @@ export class DaterangepickerComponent implements OnInit {
     }
     return false;
   }
+  isDisabled(day) {
+    if (this.minDate && day.isBefore(this.minDate, 'day')) {
+      return true;
+    } else if (this.maxDate && day.isAfter(this.maxDate, 'day')) {
+      return true;
+    }
+    return false;
+  }
   isInRange(day) {
     if (this.endDate) {
       if (day.isAfter(this.startDate) && day.isBefore(this.endDate)) {
@@ -137,6 +171,22 @@ export class DaterangepickerComponent implements OnInit {
     // } else {
     //     return false;
     // }
+  }
+  nextAvailable() {
+    let calendar = (this.singleDatePicker ? this.leftCalendar : this.rightCalendar);
+    if (!this.maxDate || this.maxDate.isAfter(calendar.month.endOf('month'))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  prevAvailable() {
+    let calendar = this.leftCalendar;
+    if (!this.minDate || this.minDate.isBefore(calendar.month.startOf('month'))) {
+      return true;
+    } else {
+      return false;
+    }
   }
   notActiveMonth(day, side) {
     let cal = (side == 'left' ? this.leftCalendar.calendar : this.rightCalendar.calendar);
@@ -166,22 +216,89 @@ export class DaterangepickerComponent implements OnInit {
     }
   }
   clickdate(day, side) {
+    if (this.isDisabled(day)) {
+      return false;
+    }
     if (this.endDate || day.isBefore(this.startDate, 'day')) {
       this.endDate = null;
       this.setStartDate(day.clone());
+      if (this.tmpEndDate) {
+        this.setEndDate(this.tmpEndDate.clone());
+      } else {
+        this.focusedInput = 'end';
+      }
     } else if (!this.endDate && day.isBefore(this.startDate)) {
       this.setEndDate(this.startDate.clone());
+      this.focusedInput = 'start';
     } else {
       this.setEndDate(day.clone());
+      this.focusedInput = 'start';
     }
     if (this.singleDatePicker) {
       this.setEndDate(this.startDate);
+      this.focusedInput = 'start';
     }
     this.updateView();
   }
+  rangeClick(range) {
+    this.setStartDate(range.period[0].clone());
+    this.setEndDate(range.period[1].clone());
+    this.updateView();
+  }
+  rangeHover(range) {
+    this.displayStartDate = range.period[0].format(this.locale.format);
+    this.displayEndDate = range.period[1].format(this.locale.format);
+  }
+  hoverExit() {
+    this.displayStartDate = this.startDate.format(this.locale.format);
+    this.displayEndDate = (this.endDate ? this.endDate.format(this.locale.format) : this.displayStartDate);
+  }
   hoverdate(day) {
-    console.log(day.format('YYYY-MM-DD'));
+    if (this.isDisabled(day)) {
+      return false;
+    }
     this.tmpDate = day.clone();
+    if (this.focusedInput === 'start') {
+      this.displayStartDate = this.tmpDate.format(this.locale.format);
+    } else {
+      this.displayEndDate = this.tmpDate.format(this.locale.format);
+    }
+  }
+  inputFocus(side) {
+    this.focusedInput = side;
+    if (this.endDate) {
+      this.tmpEndDate = this.endDate.clone();
+      if (side == 'start') {
+      } else if (side == 'end') {
+        this.endDate = null;
+      }
+    }
+
+  }
+  inputBlur(side) {
+    // console.log('blur');
+    // if (side == 'end') {
+    //   this.endDate = this.tmpEndDate.clone();
+    //   this.tmpEndDate = null;
+    // }
+    // if (!this.endDate) {
+    //   this.endDate = moment(this.displayEndDate, this.locale.format).clone();
+    // }
+  }
+  inputChanged(event, side) {
+    let val = moment(event.target.value, this.locale.format);
+    if (this.isDisabled(val)) {
+      return false;
+    }
+    if (side === 'start') {
+      this.setStartDate(val.clone());
+    } else if (side === 'end') {
+      this.setEndDate(val.clone());
+      if (val.isBefore(this.startDate, 'day')) {
+        this.setStartDate(val.clone());
+      }
+    }
+    this.updateView();
   }
   updateView() {
     if (this.endDate) {
@@ -222,6 +339,8 @@ export class DaterangepickerComponent implements OnInit {
     if (typeof startDate === 'object')
       this.startDate = moment(startDate);
 
+    this.displayStartDate = this.startDate.format(this.locale.format);
+
     // if (this.minDate && this.startDate.isBefore(this.minDate)) {
     //     this.startDate = this.minDate.clone();
     //     if (this.timePicker && this.timePickerIncrement)
@@ -247,7 +366,8 @@ export class DaterangepickerComponent implements OnInit {
       this.endDate = moment(endDate);
 
 
-
+    this.displayEndDate = this.endDate.format(this.locale.format);
+    this.tmpEndDate = null;
     // if (this.endDate.isBefore(this.startDate))
     //     this.endDate = this.startDate.clone();
 
@@ -263,5 +383,11 @@ export class DaterangepickerComponent implements OnInit {
     //     this.updateElement();
 
     // this.updateMonthsInView();
+  }
+  applyClick() {
+
+  }
+  cancelClick() {
+
   }
 }

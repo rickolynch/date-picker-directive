@@ -1,44 +1,50 @@
 <div class="rl-drpicker">
   <div id="range-container" class="column">
-    <div *ngFor="let range of ranges" class="range">{{range}}</div>
+    <div *ngFor="let range of ranges" class="range" (mouseenter)="rangeHover(range)" (mouseleave)="hoverExit()" (click)="rangeClick(range)">{{range.title}}</div>
     <div class="buttons">
-      <button class="apply">Apply</button>
-      <button class="cancel">Cancel</button>
+      <button class="apply" (click)="applyClick()">Apply</button>
+      <button class="cancel" (click)="cancelClick()">Cancel</button>
     </div>
   </div>
   <div id="calendar-container" class="column left">
     <div class="calendar-input">
-      <input type="text" placeholder="Start Date" />
+      <input type="text" placeholder="Start Date" [value]="displayStartDate" [class.focused]="focusedInput=='start'" (change)="inputChanged($event, 'start')"
+        (focus)="inputFocus('start')" (blur)="inputBlur('start')" />
     </div>
     <div class="calendar-table">
       <div class="calendar-period">
-        <i class="calendar-nav prev" (click)="clickPrev()"></i>
+        <div class="nav-button prev" (click)="clickPrev()" *ngIf="prevAvailable()">
+          <i class="calendar-nav"></i>
+        </div>
         {{getMonth('left')}}</div>
       <div class="days-header">
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
       <div class="calendar-row" *ngFor="let row of leftCalendar.calendar">
         <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'left')" [class.active]="isActiveDate(col)"
-          [class.in-range]="isInRange(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}" (mouseenter)="hoverdate(col)"
-          (click)="clickdate(col, 'left')">{{col.date()}}</div>
+          [class.in-range]="isInRange(col)" [class.disabled]="isDisabled(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}"
+          (mouseenter)="hoverdate(col)" (mouseleave)="hoverExit()" (click)="clickdate(col, 'left')">{{col.date()}}</div>
       </div>
     </div>
   </div>
   <div id="calendar-container" class="column right">
     <div class="calendar-input">
-      <input type="text" placeholder="Start Date" />
+      <input type="text" placeholder="End Date" [value]="displayEndDate" [class.focused]="focusedInput=='end'" (change)="inputChanged($event, 'end')"
+        (focus)="inputFocus('end')" (blur)="inputBlur('start')" />
     </div>
     <div class="calendar-table">
       <div class="calendar-period">
-        <i class="calendar-nav next" (click)="clickNext()"></i>
+        <div class="nav-button next" (click)="clickNext()" *ngIf="nextAvailable()">
+          <i class="calendar-nav"></i>
+        </div>
         {{getMonth('right')}}</div>
       <div class="days-header">
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
       <div class="calendar-row" *ngFor="let row of rightCalendar.calendar">
         <div *ngFor="let col of row" [class.today]="isToday(col)" [class.off]="notActiveMonth(col, 'right')" [class.active]="isActiveDate(col)"
-          [class.in-range]="isInRange(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}" (mouseenter)="hoverdate(col)"
-          (click)="clickdate(col, 'right')">{{col.date()}}</div>
+          (mouseleave)="hoverExit()" [class.in-range]="isInRange(col)" [class.disabled]="isDisabled(col)" [ngClass]="{'start-date':isStartDate(col), 'end-date':isEndDate(col)}"
+          (mouseenter)="hoverdate(col)" (click)="clickdate(col, 'right')">{{col.date()}}</div>
       </div>
     </div>
   </div>

@@ -5,12 +5,14 @@ import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
+import { DateRangePickerDirective } from './date-range-picker.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DaterangepickerComponent
+    DaterangepickerComponent,
+    DateRangePickerDirective
   ],
   imports: [
     BrowserModule
