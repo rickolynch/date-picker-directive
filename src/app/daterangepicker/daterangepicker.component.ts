@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, EventEmitter, Input } from '@angular/core';
 import * as moment from 'moment';
-
+//import { PickerService } from '../picker.service';
 @Component({
   selector: 'app-daterangepicker',
   templateUrl: './daterangepicker.component.html',
@@ -19,24 +19,77 @@ export class DaterangepickerComponent implements OnInit {
     monthNames: moment.monthsShort(),
     firstDay: moment.localeData().firstDayOfWeek()
   };
-  minDate: any = moment('01/29/2018', this.locale.format);
-  maxDate: any = moment('05/29/2018', this.locale.format);
-  singleDatePicker = false;
+  _mindate: any = null;
+  @Input()
+  set minDate(date) {
+    if (date) {
+      this._mindate = moment(date, this.locale.format);
+    }
+  }
+  get minDate() {
+    return this._mindate;
+  }
+  _maxdate: any = null;
+  @Input()
+  set maxDate(date) {
+    if (date) {
+      this._maxdate = moment(date, this.locale.format);
+    }
+  }
+  get maxDate() {
+    return this._maxdate;
+  }
+
+  _singleDatePicker: boolean = false;
+  @Input()
+  set singleDatePicker(isSingle) {
+    if (isSingle) {
+      this._singleDatePicker = isSingle;
+    }
+  }
+  get singleDatePicker() {
+    return this._singleDatePicker;
+  }
   linkedCalendars = true;
-  startDate = moment().startOf('day');
-  endDate = moment().endOf('day');
+
+  _startDate: any;
+  @Input()
+  set startDate(date) {
+    if (date) {
+      this._startDate = moment(date, this.locale.format).startOf('day');
+    }
+  }
+  get startDate() {
+    return this._startDate;
+  }
+
+  _endDate: any;
+  @Input()
+  set endDate(date) {
+    if (date) {
+      this._endDate = moment(date, this.locale.format).endOf('day');
+    }
+  }
+  get endDate() {
+    return this._endDate;
+  }
+
   tmpDate: any = null;
   tmpEndDate: any = null;
-  leftCalendar = { month: this.startDate.clone().date(2), calendar: null };
-  rightCalendar = { month: this.endDate.clone().date(2).add(1, 'month'), calendar: null };
-  ranges: any;// = ['Today', 'Yesterday', 'Last 7 days', 'Last 30 days', 'This Month', 'Last Month'];
+  leftCalendar;
+  rightCalendar;
+  ranges: any;
   days: any = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   displayStartDate: string;
   displayEndDate: string;
   focusedInput: string = 'start';
+  close = new EventEmitter();
+  dateSelected = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+    console.log(this.singleDatePicker);
     this.ranges = [{
       title: 'Today',
       period: [moment(), moment()]
@@ -56,6 +109,15 @@ export class DaterangepickerComponent implements OnInit {
       title: 'Last Month',
       period: [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     }];
+    if (!this.startDate) {
+      this._startDate = moment().startOf('day');
+    }
+    this.leftCalendar = { month: this.startDate.clone().date(2), calendar: null };
+
+    if (!this.endDate) {
+      this._endDate = this.startDate.clone().endOf('day');
+    }
+    this.rightCalendar = { month: this.endDate.clone().date(2).add(1, 'month'), calendar: null };
 
     this.displayStartDate = this.startDate.format(this.locale.format);
     this.displayEndDate = this.endDate.format(this.locale.format);
@@ -64,6 +126,7 @@ export class DaterangepickerComponent implements OnInit {
   }
 
   renderCalendar(side: string) {
+
     let date = (side == 'left' ? this.leftCalendar.month : this.rightCalendar.month);
     let month = date.month();
     let year = date.year();
@@ -166,11 +229,6 @@ export class DaterangepickerComponent implements OnInit {
         return false;
       }
     }
-    //   if ((day.isAfter(this.startDate) && day.isBefore(this.endDate)) || dt.isSame(date, 'day')) {
-    //     return true
-    // } else {
-    //     return false;
-    // }
   }
   nextAvailable() {
     let calendar = (this.singleDatePicker ? this.leftCalendar : this.rightCalendar);
@@ -220,7 +278,7 @@ export class DaterangepickerComponent implements OnInit {
       return false;
     }
     if (this.endDate || day.isBefore(this.startDate, 'day')) {
-      this.endDate = null;
+      this._endDate = null;
       this.setStartDate(day.clone());
       if (this.tmpEndDate) {
         this.setEndDate(this.tmpEndDate.clone());
@@ -237,6 +295,7 @@ export class DaterangepickerComponent implements OnInit {
     if (this.singleDatePicker) {
       this.setEndDate(this.startDate);
       this.focusedInput = 'start';
+      this.dateSelected.emit(this.startDate.format(this.locale.format));
     }
     this.updateView();
   }
@@ -270,7 +329,7 @@ export class DaterangepickerComponent implements OnInit {
       this.tmpEndDate = this.endDate.clone();
       if (side == 'start') {
       } else if (side == 'end') {
-        this.endDate = null;
+        this._endDate = null;
       }
     }
 
@@ -334,10 +393,10 @@ export class DaterangepickerComponent implements OnInit {
   }
   setStartDate(startDate) {
     if (typeof startDate === 'string')
-      this.startDate = moment(startDate, this.locale.format);
+      this._startDate = moment(startDate, this.locale.format);
 
     if (typeof startDate === 'object')
-      this.startDate = moment(startDate);
+      this._startDate = moment(startDate);
 
     this.displayStartDate = this.startDate.format(this.locale.format);
 
@@ -360,10 +419,10 @@ export class DaterangepickerComponent implements OnInit {
   }
   setEndDate(endDate) {
     if (typeof endDate === 'string')
-      this.endDate = moment(endDate, this.locale.format);
+      this._endDate = moment(endDate, this.locale.format);
 
     if (typeof endDate === 'object')
-      this.endDate = moment(endDate);
+      this._endDate = moment(endDate);
 
 
     this.displayEndDate = this.endDate.format(this.locale.format);
@@ -385,9 +444,9 @@ export class DaterangepickerComponent implements OnInit {
     // this.updateMonthsInView();
   }
   applyClick() {
-
+    this.dateSelected.emit(this.startDate.format(this.locale.format) + ' - ' + this.endDate.format(this.locale.format));
   }
   cancelClick() {
-
+    this.close.emit(false);
   }
 }

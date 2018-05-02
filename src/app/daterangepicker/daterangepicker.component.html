@@ -1,5 +1,5 @@
 <div class="rl-drpicker">
-  <div id="range-container" class="column">
+  <div id="range-container" class="column" *ngIf="!singleDatePicker">
     <div *ngFor="let range of ranges" class="range" (mouseenter)="rangeHover(range)" (mouseleave)="hoverExit()" (click)="rangeClick(range)">{{range.title}}</div>
     <div class="buttons">
       <button class="apply" (click)="applyClick()">Apply</button>
@@ -16,7 +16,11 @@
         <div class="nav-button prev" (click)="clickPrev()" *ngIf="prevAvailable()">
           <i class="calendar-nav"></i>
         </div>
-        {{getMonth('left')}}</div>
+        {{getMonth('left')}}
+        <div class="nav-button next" (click)="clickNext()" *ngIf="nextAvailable() && singleDatePicker">
+          <i class="calendar-nav"></i>
+        </div>
+      </div>
       <div class="days-header">
         <div class="day" *ngFor="let day of days">{{day}}</div>
       </div>
@@ -27,7 +31,7 @@
       </div>
     </div>
   </div>
-  <div id="calendar-container" class="column right">
+  <div id="calendar-container" class="column right" *ngIf="!singleDatePicker">
     <div class="calendar-input">
       <input type="text" placeholder="End Date" [value]="displayEndDate" [class.focused]="focusedInput=='end'" (change)="inputChanged($event, 'end')"
         (focus)="inputFocus('end')" (blur)="inputBlur('start')" />

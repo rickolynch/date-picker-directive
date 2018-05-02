@@ -17,6 +17,7 @@ import { DateRangePickerDirective } from './date-range-picker.directive';
   imports: [
     BrowserModule
   ],
+  entryComponents: [DaterangepickerComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
