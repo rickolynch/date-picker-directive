@@ -335,14 +335,6 @@ export class DaterangepickerComponent implements OnInit {
 
   }
   inputBlur(side) {
-    // console.log('blur');
-    // if (side == 'end') {
-    //   this.endDate = this.tmpEndDate.clone();
-    //   this.tmpEndDate = null;
-    // }
-    // if (!this.endDate) {
-    //   this.endDate = moment(this.displayEndDate, this.locale.format).clone();
-    // }
   }
   inputChanged(event, side) {
     let val = moment(event.target.value, this.locale.format);
@@ -399,23 +391,6 @@ export class DaterangepickerComponent implements OnInit {
       this._startDate = moment(startDate);
 
     this.displayStartDate = this.startDate.format(this.locale.format);
-
-    // if (this.minDate && this.startDate.isBefore(this.minDate)) {
-    //     this.startDate = this.minDate.clone();
-    //     if (this.timePicker && this.timePickerIncrement)
-    //         this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
-    // }
-
-    // if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
-    //     this.startDate = this.maxDate.clone();
-    //     if (this.timePicker && this.timePickerIncrement)
-    //         this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
-    // }
-
-    // if (!this.isShowing)
-    //     this.updateElement();
-
-    // this.updateMonthsInView();
   }
   setEndDate(endDate) {
     if (typeof endDate === 'string')
@@ -427,21 +402,6 @@ export class DaterangepickerComponent implements OnInit {
 
     this.displayEndDate = this.endDate.format(this.locale.format);
     this.tmpEndDate = null;
-    // if (this.endDate.isBefore(this.startDate))
-    //     this.endDate = this.startDate.clone();
-
-    // if (this.maxDate && this.endDate.isAfter(this.maxDate))
-    //     this.endDate = this.maxDate.clone();
-
-    // if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
-    //     this.endDate = this.startDate.clone().add(this.dateLimit);
-
-    // this.previousRightTime = this.endDate.clone();
-
-    // if (!this.isShowing)
-    //     this.updateElement();
-
-    // this.updateMonthsInView();
   }
   applyClick() {
     this.dateSelected.emit(this.startDate.format(this.locale.format) + ' - ' + this.endDate.format(this.locale.format));
