@@ -4,20 +4,18 @@ import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
 
 import { AppComponent } from './app.component';
-import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
-import { DateRangePickerDirective } from './date-range-picker.directive';
+import { DatepickerModule } from './modules/datepicker/datepicker.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DaterangepickerComponent,
-    DateRangePickerDirective
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    DatepickerModule
   ],
-  entryComponents: [DaterangepickerComponent],
+  entryComponents: [],
   providers: [],
   bootstrap: [AppComponent]
 })

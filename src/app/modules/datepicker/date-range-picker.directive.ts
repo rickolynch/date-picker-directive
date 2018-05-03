@@ -3,7 +3,7 @@ import { ComponentFactoryResolver, ComponentFactory, ComponentRef, ViewContainer
 
 import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
 @Directive({
-  selector: '[date-range-picker]'
+  selector: '[date-picker]'
 })
 export class DateRangePickerDirective {
   @Input() minDate?: string;
@@ -46,6 +46,7 @@ export class DateRangePickerDirective {
     });
 
   }
+
   @HostListener('document:click', ['$event.target'])
   public onClick(targetElement) {
     if (this.componentRef) {
