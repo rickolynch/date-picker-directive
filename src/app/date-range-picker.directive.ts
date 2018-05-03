@@ -11,8 +11,12 @@ export class DateRangePickerDirective {
   @Input() singleDatePicker?: boolean;
   @Input() linkedCalendars?: boolean
   @Input() startDate?: string;
+  @Input() ngModel?: string;
   @Input() endDate?: string;
+  @Output() dateselected = new EventEmitter();
+  @Output() ngModelChanged = new EventEmitter();
   componentRef = null;
+  pickerLoaded = false;
 
   constructor(private ngZone: NgZone, private renderer: Renderer2, private viewContainer: ViewContainerRef,
     private componentFactoryResolver: ComponentFactoryResolver) { }
@@ -36,8 +40,30 @@ export class DateRangePickerDirective {
       this.componentRef.destroy();
     });
     this.componentRef.instance.dateSelected.subscribe((val) => {
-      console.log(val);
+      this.dateselected.emit(val);
+      this.componentRef.destroy();
+      this.pickerLoaded = false;
     });
+
+  }
+  @HostListener('document:click', ['$event.target'])
+  public onClick(targetElement) {
+    //console.log(targetElement);
+    //console.log(this.viewContainer.element.nativeElement.parentElement);
+    if (this.componentRef) {
+
+      console.log(this.componentRef.location.nativeElement);
+      console.log(targetElement);
+      const clickedDp = this.componentRef.location.nativeElement.contains(targetElement.nativeElement);
+      const clickedInput = this.viewContainer.element.nativeElement.contains(targetElement.nativeElement);
+      console.log(clickedDp + '|' + clickedInput);
+      if (!clickedDp && !clickedInput) {
+        if (this.componentRef) {
+          console.log('here');
+          // this.componentRef.destroy();
+        }
+      }
+    }
 
   }
 }

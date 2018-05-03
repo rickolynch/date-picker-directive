@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, EventEmitter, Input, HostListener } from '@angular/core';
 import * as moment from 'moment';
 //import { PickerService } from '../picker.service';
 @Component({
@@ -74,6 +74,7 @@ export class DaterangepickerComponent implements OnInit {
     return this._endDate;
   }
 
+
   tmpDate: any = null;
   tmpEndDate: any = null;
   leftCalendar;
@@ -89,7 +90,6 @@ export class DaterangepickerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.singleDatePicker);
     this.ranges = [{
       title: 'Today',
       period: [moment(), moment()]
@@ -126,7 +126,6 @@ export class DaterangepickerComponent implements OnInit {
   }
 
   renderCalendar(side: string) {
-
     let date = (side == 'left' ? this.leftCalendar.month : this.rightCalendar.month);
     let month = date.month();
     let year = date.year();
@@ -303,6 +302,7 @@ export class DaterangepickerComponent implements OnInit {
     this.setStartDate(range.period[0].clone());
     this.setEndDate(range.period[1].clone());
     this.updateView();
+    this.applyClick();
   }
   rangeHover(range) {
     this.displayStartDate = range.period[0].format(this.locale.format);

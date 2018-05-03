@@ -4,7 +4,7 @@
   left: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   display: inline-block;
-  border: 2px solid #ccc;
+  border: 1px solid #eee;
   background-color: #fff;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
   box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
@@ -86,29 +86,11 @@
           border: solid #08c;
           border-width: 0 3px 3px 0;
         }
-      } // .calendar-nav {
-      //   border: solid #333;
-      //   border-width: 0 3px 3px 0;
-      //   padding: 5px;
-      //   display: inline-block;
-      // }
-      // .calendar-nav:hover {
-      //   border: solid #08c;
-      //   border-width: 0 3px 3px 0;
-      // }
-      // .calendar-nav.prev {
-      //   transform: rotate(135deg);
-      //   -webkit-transform: rotate(135deg);
-      // }
-      // .calendar-nav.next {
-      //   float: right;
-      //   transform: rotate(-45deg);
-      //   -webkit-transform: rotate(-45deg);
-      // }
+      }
     }
     .days-header {
       >div {
-        display: inline-block; //padding: 7px 3px;
+        display: inline-block;
         font-weight: 800;
         font-size: 10pt;
         white-space: nowrap;
@@ -121,11 +103,11 @@
     .calendar-row {
       >div {
         cursor: pointer;
-        display: inline-block; //padding: 7px 3px;
+        display: inline-block;
         font-weight: 500;
         font-size: 10pt;
         white-space: nowrap;
-        text-align: center; //min-width: 32px;
+        text-align: center;
         width: 32px;
         height: 32px;
         line-height: 32px;
@@ -139,13 +121,13 @@
         color: #fff !important;
       }
       >div.start-date:not(.off) {
-        border-radius: 5px 0 0 5px;
+        //border-radius: 5px 0 0 5px;
       }
       >div.end-date:not(.off) {
-        border-radius: 0 5px 5px 0;
+        //border-radius: 0 5px 5px 0;
       }
       >div.start-date.end-date {
-        border-radius: 5px;
+        //border-radius: 5px;
       }
       >div.in-range:not(.off) {
         background-color: #ebf4f8;
@@ -195,19 +177,19 @@
 .rl-drpicker:before {
   position: absolute;
   display: inline-block;
-  top: -7px;
+  top: -9px;
   border-right: 7px solid transparent;
   border-left: 7px solid transparent;
-  border-bottom: 7px solid #ccc;
+  border-bottom: 9px solid #eee;
   content: '';
 }
 
-.rl-drpicker:after {
-  position: absolute;
-  display: inline-block;
-  top: -7px;
-  border-right: 7px solid transparent;
-  border-left: 7px solid transparent;
-  border-bottom: 7px solid #ccc;
-  content: '';
-}
+// .rl-drpicker:after {
+//   position: absolute;
+//   display: inline-block;
+//   top: -7px;
+//   border-right: 7px solid transparent;
+//   border-left: 7px solid transparent;
+//   border-bottom: 7px solid #ccc;
+//   content: '';
+// }

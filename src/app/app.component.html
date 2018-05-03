@@ -1,6 +1,6 @@
 <h4>Date Picker</h4>
 <div>
-  <input type="text" placeholder="MM/DD/YYYY" date-range-picker startDate="04/10/2018" singleDatePicker="true" />
+  <input type="text" placeholder="MM/DD/YYYY" date-range-picker [value]="dateval" (dateselected)="dateSelected($event)" />
   <br>
 </div>
 <p>Using directive on input and container</p>
