@@ -48,19 +48,13 @@ export class DateRangePickerDirective {
   }
   @HostListener('document:click', ['$event.target'])
   public onClick(targetElement) {
-    //console.log(targetElement);
-    //console.log(this.viewContainer.element.nativeElement.parentElement);
     if (this.componentRef) {
-
-      console.log(this.componentRef.location.nativeElement);
-      console.log(targetElement);
-      const clickedDp = this.componentRef.location.nativeElement.contains(targetElement.nativeElement);
-      const clickedInput = this.viewContainer.element.nativeElement.contains(targetElement.nativeElement);
-      console.log(clickedDp + '|' + clickedInput);
-      if (!clickedDp && !clickedInput) {
+      const clickedDp = this.componentRef.location.nativeElement.contains(targetElement);
+      const clickedInput = this.viewContainer.element.nativeElement == targetElement;
+      const inDp = (targetElement.parentElement ? targetElement.parentElement.classList.contains('calendar-row') : false);
+      if (!clickedDp && !clickedInput && !inDp) {
         if (this.componentRef) {
-          console.log('here');
-          // this.componentRef.destroy();
+          this.componentRef.destroy();
         }
       }
     }
