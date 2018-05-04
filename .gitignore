@@ -6,6 +6,7 @@
 /tmp
 /out-tsc
 /.ng_pkg_build
+/.ng_pkg_build/date-picker-directive/out/node_modules
 
 # dependencies
 /node_modules
