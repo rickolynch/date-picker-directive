@@ -5,5 +5,6 @@
     "externals": {
       "moment": "moment"
     }
-  }
+  },
+  "whitelistedNonPeerDependencies": ["."]
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, EventEmitter, Input, HostListener } from '@angular/core';
-import * as moment from 'moment';
+var moment = require('moment');
+//import * as moment from 'moment';
 //import { PickerService } from '../picker.service';
 @Component({
   selector: 'app-daterangepicker',

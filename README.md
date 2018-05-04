@@ -1,27 +1,89 @@
-# DateRangePicker
+# date-picker-directive
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+Angular date picker
 
-## Development server
+## Description
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This is a date picker that uses a directive which you can place on your html input. Compatible with Angular2+
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+*npm i date-picker-directive --save*
 
-## Build
+## Dependencies
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+* Moment.js
 
-## Running unit tests
+## Basic Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 1. Add *DatepickerModule* import to your *@NgModule* like example below
+``` typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { MyTestApp } from './my-test-app';
+import { DatePickerModule } from 'date-picker-directive';
 
-## Running end-to-end tests
+@NgModule({
+    imports:      [ BrowserModule, DatePickerModule ],
+    declarations: [ MyTestApp ],
+    bootstrap:    [ MyTestApp ]
+})
+export class MyTestAppModule {}
+```
+### 2. Add the directive and additional options to your HTML input
+``` html
+<input type="text" placeholder="Input Date" date-picker (dateselected)="dateSelected($event)" />
+```
+### 3. Provide method for date selected event
+``` typescript
+import { Component } from '@angular/core';
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'app';
+  dateval: string = null;
+  dateSelected(val) {
+    this.dateval = val;
+  }
+}
+```
 
-## Further help
+## Attributes
+The following options are available for the date picker
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+*NB* all date options must be entered in the format *MM/DD/YYYY*
+
+| Option        | Default    | Type  | Description |
+| ------------- | ------------- | ----- | ----- |
+| singleDatePicker | false | boolean | Determine whether to show a single calendar or show a range calendar |
+| minDate | no default value | string | Set earliest date in the past that the calendar can show. |
+| maxdate | no default value | string | Set the latest date in the future which the calendar can show |
+| startDate | Today | string | Set the start date of the selected range on the calendar. If using singleDatePicker, then this property should be used to set the default selected date on the calendar |
+| endDate | Today | string | Set the end date of the selected range on the calendar. |
+
+## Events
+
+### dateselected
+
+This event is triggered when a date is selected. If using a single calendar then it is triggered once a date is clicked. When using a range calendar, it is triggered when a default range is selected or the apply button is clicked.
+
+## Author
+* Author: Ricardo Lynch
+
+## License
+This project is licensed under the MIT License 
+
+# Keywords
+* Date Picker
+* Date Range
+* Angular2
+* Angular4
+* Typescript
+* ng4
+* ng2
+* ng
+* Directive
