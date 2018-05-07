@@ -69,7 +69,7 @@ The following options are available for the date picker
 
 ### dateselected
 
-This event is triggered when a date is selected. If using a single calendar then it is triggered once a date is clicked. When using a range calendar, it is triggered when a default range is selected or the apply button is clicked.
+This event is triggered when a date is selected. If using a single calendar then it is triggered once a date is clicked and returns a single date "MM/DD/YYYY". When using a range calendar, it is triggered when a default range is selected or the apply button is clicked and returns a date range "MM/DD/YYYY" - "MM/DD/YYYY". 
 
 ## Author
 * Author: Ricardo Lynch
