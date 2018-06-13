@@ -21,7 +21,7 @@ This is a date picker that uses a directive which you can place on your html inp
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MyTestApp } from './my-test-app';
-import { DatePickerModule } from 'date-picker-directive';
+import { DatepickerModule } from 'date-picker-directive';
 
 @NgModule({
     imports:      [ BrowserModule, DatePickerModule ],
